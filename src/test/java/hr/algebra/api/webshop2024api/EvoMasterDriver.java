@@ -9,7 +9,6 @@ import org.evomaster.client.java.controller.problem.ProblemInfo;
 import org.evomaster.client.java.controller.problem.RestProblem;
 import org.evomaster.client.java.sql.DbCleaner;
 import org.evomaster.client.java.sql.DbSpecification;
-import org.h2.tools.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +24,7 @@ public class EvoMasterDriver extends org.evomaster.client.java.controller.Embedd
             "users"
     );
 
-    static String PREFIXES_TO_COVER = "*";  // set to hr.algebra to cover only non-library code
+    static String PREFIXES_TO_COVER = "hr.algebra";  // set to hr.algebra to cover only non-library code
                                             // - might have negative impact on code exploration
     static String BASE_URL = "http://localhost:8081";
 
@@ -33,8 +32,6 @@ public class EvoMasterDriver extends org.evomaster.client.java.controller.Embedd
     static String DB_PASS = "springstudent";
 
     static int SUT_CONTROLLER_PORT = 40100;
-    static int DB_PORT = 8286;
-    static Server server;
 
     private Connection sqlConnection;
 
