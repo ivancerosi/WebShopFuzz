@@ -40,6 +40,10 @@ public class SecurityConfig {
                 configurer
                         // Swagger UI and API Docs
                         .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**", "/api-docs/**").permitAll()
+
+                        .antMatchers("/webShopApi/**").permitAll()
+
+                        /* Disable security
                         //Categories
                         .antMatchers(HttpMethod.GET, "/webShopApi/categories/allCategories").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET, "/webShopApi/categories/**").hasRole("ADMIN")
@@ -67,6 +71,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/webShopApi/cartItems/findBySession/**").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET, "/webShopApi/cartItems/findByUsername/**").hasRole("ADMIN")
 
+                         */
         );
         // use HTTP Basic authentication
         http.httpBasic(Customizer.withDefaults());

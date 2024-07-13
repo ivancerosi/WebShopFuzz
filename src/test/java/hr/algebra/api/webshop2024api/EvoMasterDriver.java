@@ -22,9 +22,11 @@ import java.util.List;
 public class EvoMasterDriver extends org.evomaster.client.java.controller.EmbeddedSutController {
     static List<String> DB_TABLES_SKIP = Arrays.asList(
             // Add tables that shouldn't be cleared between test runs
+            "users"
     );
 
-    static String PREFIXES_TO_COVER = "hr.algebra"; // set to NULL in order to cover all classes
+    static String PREFIXES_TO_COVER = "*";  // set to hr.algebra to cover only non-library code
+                                            // - might have negative impact on code exploration
     static String BASE_URL = "http://localhost:8081";
 
     static String DB_USER = "sa";
@@ -49,23 +51,7 @@ public class EvoMasterDriver extends org.evomaster.client.java.controller.Embedd
     }
 
     public EvoMasterDriver() {
-        try {
-            startDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Failed to start H2 database, shutting down...");
-            System.exit(1);
-        }
-
         setControllerPort(SUT_CONTROLLER_PORT);
-    }
-
-    private static Server startDatabase() throws SQLException {
-        server = Server.createTcpServer("-tcpPort", ""+DB_PORT,"-ifNotExists").start();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException ignore) {};
-        return server;
     }
 
     @Override
