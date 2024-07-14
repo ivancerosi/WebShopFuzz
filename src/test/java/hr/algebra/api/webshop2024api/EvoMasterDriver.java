@@ -1,16 +1,19 @@
 package hr.algebra.api.webshop2024api;
 
 import org.evomaster.client.java.controller.InstrumentedSutStarter;
-import org.evomaster.client.java.controller.api.dto.SutInfoDto;
+
 import org.evomaster.client.java.controller.api.dto.auth.AuthenticationDto;
 import org.evomaster.client.java.controller.api.dto.database.schema.DatabaseType;
+import org.evomaster.client.java.controller.api.dto.SutInfoDto;
 import org.evomaster.client.java.controller.internal.SutController;
 import org.evomaster.client.java.controller.problem.ProblemInfo;
 import org.evomaster.client.java.controller.problem.RestProblem;
 import org.evomaster.client.java.sql.DbCleaner;
 import org.evomaster.client.java.sql.DbSpecification;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Connection;
@@ -70,7 +73,7 @@ public class EvoMasterDriver extends org.evomaster.client.java.controller.Embedd
     public ProblemInfo getProblemInfo() {
         return new RestProblem(
                 BASE_URL+"/api-docs",
-                Arrays.asList("/health", "/health.jon", "/error")
+                Arrays.asList("/health", "/health.json", "/error")
         );
     }
 
@@ -89,6 +92,13 @@ public class EvoMasterDriver extends org.evomaster.client.java.controller.Embedd
                 "--spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
                 "--spring.datasource.username="+DB_USER,
                 "--spring.datasource.password="+DB_PASS
+        });
+
+        ctx.addApplicationListener(new ApplicationListener<ContextRefreshedEvent>() {
+            @Override
+            public void onApplicationEvent(ContextRefreshedEvent e) {
+                Thread.currentThread().interrupt();
+            }
         });
 
         if (sqlConnection != null) {
@@ -115,6 +125,7 @@ public class EvoMasterDriver extends org.evomaster.client.java.controller.Embedd
     @Override
     public void stopSut() {
         ctx.stop();
+        SpringApplication.exit(ctx);
     }
 
     @Override
