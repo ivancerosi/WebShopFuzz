@@ -1,6 +1,8 @@
 package hr.algebra.api.webshop2024api.ApiDTO;
 
 import javax.validation.constraints.*;
+
+import hr.algebra.dal.webshop2024dal.Entity.Image;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,10 +24,21 @@ public class DTOProduct {
     private BigDecimal price;
     private DTOSubcategory subcategory;
 
-    public DTOProduct(String name, String description, BigDecimal price, DTOSubcategory subcategory) {
+    private String imageUrl;
+    private String b64image;
+
+    public DTOProduct(String name, String description, BigDecimal price, DTOSubcategory subcategory, String imageUrl) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.subcategory = subcategory;
+        this.imageUrl = imageUrl;
+    }
+    public DTOProduct(String name, String description, BigDecimal price, DTOSubcategory subcategory, Image image) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.subcategory = subcategory;
+        this.b64image = image.getB64image();
     }
 }

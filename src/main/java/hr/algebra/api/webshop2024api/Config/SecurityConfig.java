@@ -74,7 +74,7 @@ public class SecurityConfig {
                          */
         );
         // use HTTP Basic authentication
-        http.httpBasic(Customizer.withDefaults());
+        //http.httpBasic(Customizer.withDefaults());
         // disable Cross Site Request Forgery (CSRF)
         http.csrf(csfr->csfr.disable());
         return http.build();

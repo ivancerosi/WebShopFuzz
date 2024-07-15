@@ -1,18 +1,21 @@
 package hr.algebra.api.webshop2024api.Rest;
 
-import hr.algebra.api.webshop2024api.ApiDTO.DTOCategory;
 import hr.algebra.api.webshop2024api.ApiDTO.DTOProduct;
 import hr.algebra.api.webshop2024api.ApiMapper.ProductMapper;
 import hr.algebra.api.webshop2024api.ApiMapper.SubcategoryMapper;
 import hr.algebra.bl.webshop2024bl.Service.ProductService;
-import hr.algebra.dal.webshop2024dal.Entity.Category;
+import hr.algebra.dal.webshop2024dal.Entity.Image;
 import hr.algebra.dal.webshop2024dal.Entity.Product;
 import hr.algebra.utils.CustomExceptions.CustomNotFoundException;
 import javax.validation.Valid;
+
+import hr.algebra.utils.CustomExceptions.ImageProcessingException;
+import hr.algebra.utils.ImageConverter.ImageConverter;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -23,11 +26,14 @@ public class ProductRestController {
     private final ProductService productService;
     private final ProductMapper productMapper;
     private final SubcategoryMapper subcategoryMapper;
+    private final ImageConverter imageConverter;
 
     public ProductRestController(ProductService productService, ProductMapper productMapper, SubcategoryMapper subcategoryMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
         this.subcategoryMapper = subcategoryMapper;
+        imageConverter = new ImageConverter(320,320,"png");
+
     }
 
     @Async
@@ -59,8 +65,16 @@ public class ProductRestController {
     @ResponseBody
     @PostMapping("/products")
     public CompletableFuture<DTOProduct> createProduct(@Valid @RequestBody DTOProduct dtoProduct) {
+        String base64img;
+        try {
+            base64img = imageConverter.convertToBase64(dtoProduct.getImageUrl());
+        } catch (IOException e) {
+            throw new ImageProcessingException(e.getMessage());
+        }
         Product newProduct = productMapper.DTOProductToProduct(dtoProduct);
+        newProduct.setImage(new Image(base64img));
         Product savedProduct = productService.save(newProduct);
+
         return CompletableFuture.supplyAsync(() -> productMapper.ProductToDTOProduct(savedProduct))
                 .thenApplyAsync(savedDtoProduct -> savedDtoProduct);
     }

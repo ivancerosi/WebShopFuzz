@@ -15,11 +15,12 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
+    @Lob
+    @Column(name = "image_b64", nullable = false, columnDefinition = "text")
+    private String b64image;
 
-    public Image(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public Image(String b64image) {
+        this.b64image = b64image;
     }
 }
 

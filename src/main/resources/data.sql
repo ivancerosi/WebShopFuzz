@@ -4,14 +4,28 @@ insert into subcategories (name, category_id) values
 ('hladnjaci', select c.category_id from categories c where c.name='bijela tehnika'),
 ('perilice', select c.category_id from categories c where c.name='bijela tehnika');
 
-insert into products (description, name, price, subcategory_id) values
-('Energetski razred E\nObujam rashladnog dijela 198 l ', 'LG GBP', 330, select sc.subcategory_id from subcategories sc where sc.name='hladnjaci'),
-('KAPACITET:\nUkupno (l): 341', 'GORENJE RK', 569, select sc.subcategory_id from subcategories sc where sc.name='hladnjaci'),
-('Smart inverterski kompresor (10 godina\njamstva na kompresor)', 'SAMSUNG RT', 879, select sc.subcategory_id from subcategories sc where sc.name='hladnjaci'),
+insert into image(image_b64) values
+('BASE64 IMAGE MOCK 1'),
+('BASE64 IMAGE MOCK 2'),
+('BASE64 IMAGE MOCK 3'),
+('BASE64 IMAGE MOCK 4'),
+('BASE64 IMAGE MOCK 5'),
+('BASE64 IMAGE MOCK 6');
 
-('Perilica rublja, 8kg,/1400 okr. Inverter', 'HISENSE WQF', 289, select sc.subcategory_id from subcategories sc where sc.name='perilice'),
-('Perilica-sušilica s parom,8/5kg,1200okr', 'LG F2D', 289, select sc.subcategory_id from subcategories sc where sc.name='perilice'),
-('Perilica, rublja, 6kg, 1000okr', 'GORENJE WN', 249, select sc.subcategory_id from subcategories sc where sc.name='perilice');
+insert into products (description, name, price, subcategory_id, image_id) values
+('Energetski razred E\nObujam rashladnog dijela 198 l ', 'LG GBP', 330, select sc.subcategory_id from subcategories sc where sc.name='hladnjaci',
+(select i.image_id from image i where i.image_b64='BASE64 IMAGE MOCK 1')),
+('KAPACITET:\nUkupno (l): 341', 'GORENJE RK', 569, select sc.subcategory_id from subcategories sc where sc.name='hladnjaci',
+(select i.image_id from image i where i.image_b64='BASE64 IMAGE MOCK 2')),
+('Smart inverterski kompresor (10 godina\njamstva na kompresor)', 'SAMSUNG RT', 879, select sc.subcategory_id from subcategories sc where sc.name='hladnjaci',
+(select i.image_id from image i where i.image_b64='BASE64 IMAGE MOCK 3')),
+
+('Perilica rublja, 8kg,/1400 okr. Inverter', 'HISENSE WQF', 289, select sc.subcategory_id from subcategories sc where sc.name='perilice',
+(select i.image_id from image i where i.image_b64='BASE64 IMAGE MOCK 4')),
+('Perilica-sušilica s parom,8/5kg,1200okr', 'LG F2D', 289, select sc.subcategory_id from subcategories sc where sc.name='perilice',
+(select i.image_id from image i where i.image_b64='BASE64 IMAGE MOCK 5')),
+('Perilica, rublja, 6kg, 1000okr', 'GORENJE WN', 249, select sc.subcategory_id from subcategories sc where sc.name='perilice',
+(select i.image_id from image i where i.image_b64='BASE64 IMAGE MOCK 6'));
 
 insert into users(username, email, enabled, password) values
 -- pass: springstudent1

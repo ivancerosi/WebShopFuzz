@@ -30,10 +30,15 @@ public class Product {
     @JoinColumn(name = "subcategory_id", nullable = false)
     private Subcategory subcategory;
 
-    public Product(String name, String description, BigDecimal price, Subcategory subcategory) {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", nullable = true)
+    private Image image;
+
+    public Product(String name, String description, BigDecimal price, Subcategory subcategory, Image image) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.subcategory = subcategory;
+        this.image=image;
     }
 }
